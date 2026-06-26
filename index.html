@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jelajah Kuliner Nusantara - Ular Tangga</title>
+    <!-- Google Fonts: Poppins for modern typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Local stylesheet -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-background"></div>
+    
+    <!-- START MENU VIEW -->
+    <div id="menu-screen" class="container menu-container">
+        <header class="app-header text-center">
+            <div class="logo-area justify-center">
+                <i class="fa-solid fa-utensils logo-icon"></i>
+                <div>
+                    <h1>Jelajah Kuliner Nusantara</h1>
+                    <p class="subtitle">Petualangan Ular Tangga Rasa Nusantara</p>
+                </div>
+            </div>
+        </header>
+        
+        <div class="glass-card menu-card animate-zoom">
+            <h2><i class="fa-solid fa-users-gear section-icon"></i> Registrasi Penjelajah</h2>
+            
+            <!-- Player Count Button Group -->
+            <div class="form-group">
+                <label class="form-label">Pilih Jumlah Pemain:</label>
+                <div class="player-count-options">
+                    <button type="button" class="player-count-btn active" data-count="2">2 Pemain</button>
+                    <button type="button" class="player-count-btn" data-count="3">3 Pemain</button>
+                    <button type="button" class="player-count-btn" data-count="4">4 Pemain</button>
+                </div>
+            </div>
+            
+            <!-- Player Name Registration Inputs -->
+            <div class="form-group">
+                <label class="form-label">Masukkan Nama Pemain:</label>
+                <div id="player-names-inputs" class="player-names-inputs">
+                    <div class="player-input-row" id="p1-input-row">
+                        <span class="player-color-indicator p1-bg"></span>
+                        <input type="text" id="player1-name" class="form-input" value="Pemain 1" placeholder="Nama Pemain 1">
+                    </div>
+                    <div class="player-input-row" id="p2-input-row">
+                        <span class="player-color-indicator p2-bg"></span>
+                        <input type="text" id="player2-name" class="form-input" value="Pemain 2" placeholder="Nama Pemain 2">
+                    </div>
+                    <div class="player-input-row d-none" id="p3-input-row">
+                        <span class="player-color-indicator p3-bg"></span>
+                        <input type="text" id="player3-name" class="form-input" value="Pemain 3" placeholder="Nama Pemain 3">
+                    </div>
+                    <div class="player-input-row d-none" id="p4-input-row">
+                        <span class="player-color-indicator p4-bg"></span>
+                        <input type="text" id="player4-name" class="form-input" value="Pemain 4" placeholder="Nama Pemain 4">
+                    </div>
+                </div>
+            </div>
+            
+            <button id="start-game-btn" class="btn btn-primary btn-lg w-100 mt-20">
+                <i class="fa-solid fa-gamepad"></i> Mulai Game
+            </button>
+        </div>
+    </div>
+
+    <!-- GAME BOARD VIEW (Hidden initially) -->
+    <div id="game-screen" class="container d-none">
+        <!-- Header Section -->
+        <header class="app-header">
+            <div class="logo-area">
+                <i class="fa-solid fa-utensils logo-icon"></i>
+                <div>
+                    <h1>Jelajah Kuliner Nusantara</h1>
+                    <p class="subtitle">Petualangan Ular Tangga Rasa Nusantara</p>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content Area -->
+        <main class="game-wrapper">
+            <!-- Left Column: The Board -->
+            <div class="board-column">
+                <div class="board-container" id="board-container">
+                    <!-- SVG Overlay for Snakes and Ladders -->
+                    <svg id="board-svg" class="board-overlay-svg"></svg>
+                    
+                    <!-- Dynamic Board Grid -->
+                    <div id="board" class="board-grid"></div>
+                    
+                    <!-- Player Tokens (instantiated dynamically inside game.js) -->
+                </div>
+            </div>
+
+            <!-- Right Column: Control Panel & Status -->
+            <div class="control-column">
+                <!-- Active Turn Badge -->
+                <div class="glass-card turn-card">
+                    <h2><i class="fa-solid fa-hourglass-half section-icon"></i> Giliran Bermain</h2>
+                    <div class="active-player-box" id="active-player-box">
+                        <span id="active-player-indicator" class="active-player-dot p1-bg"></span>
+                        <h3 id="active-player-name" class="active-player-name">Pemain 1</h3>
+                    </div>
+                    <div class="status-grid" style="margin-top: 15px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                        <div class="status-item" style="background: rgba(255, 255, 255, 0.45); border-radius: 12px; padding: 10px; display: flex; flex-direction: column;">
+                            <span class="status-label" style="font-size: 0.75rem; color: var(--text-muted); font-weight: 500;">Posisi Sekarang</span>
+                            <span id="current-position" class="status-value" style="font-size: 1.05rem; font-weight: 700; margin-top: 4px; color: var(--text-dark);">Kotak 1</span>
+                        </div>
+                        <div class="status-item" style="background: rgba(255, 255, 255, 0.45); border-radius: 12px; padding: 10px; display: flex; flex-direction: column; justify-content: space-between;">
+                            <span class="status-label" style="font-size: 0.75rem; color: var(--text-muted); font-weight: 500; margin-bottom: 2px;">Wilayah</span>
+                            <span id="current-region" class="status-value badge sumatera" style="font-size: 0.8rem; font-weight: 700;">Sumatera</span>
+                        </div>
+                    </div>
+                    <div class="current-food-display" style="margin-top: 15px; background: rgba(255, 255, 255, 0.45); border-radius: 12px; padding: 12px; border: 1px dashed rgba(0, 0, 0, 0.08); display: flex; flex-direction: column; gap: 8px;">
+                        <span class="food-label" style="font-size: 0.75rem; color: var(--text-muted); font-weight: 500;">Kuliner di Kotak Aktif:</span>
+                        <h3 id="current-food-name" class="food-name" style="font-size: 1.1rem; font-weight: 700; color: #e65100;">Rendang</h3>
+                        <button id="view-food-detail-btn" class="btn btn-secondary btn-sm" style="width: 100%;">
+                            <i class="fa-solid fa-circle-info"></i> Detail Kuliner
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Players Status List -->
+                <div class="glass-card status-card">
+                    <h2><i class="fa-solid fa-users section-icon"></i> Daftar Penjelajah</h2>
+                    <div id="players-list" class="players-list-container">
+                        <!-- Populated dynamically -->
+                    </div>
+                </div>
+
+                <!-- Dice Rolling Card -->
+                <div class="glass-card dice-card">
+                    <h2><i class="fa-solid fa-dice section-icon"></i> Lempar Dadu</h2>
+                    <div class="dice-section">
+                        <!-- 3D / Interactive Dice Visual -->
+                        <div class="dice-container" id="dice-container">
+                            <div class="dice" id="game-dice">
+                                <div class="face front">1</div>
+                                <div class="face back">6</div>
+                                <div class="face right">2</div>
+                                <div class="face left">5</div>
+                                <div class="face top">3</div>
+                                <div class="face bottom">4</div>
+                            </div>
+                        </div>
+                        
+                        <div class="dice-action">
+                            <button id="roll-btn" class="btn btn-primary btn-lg">
+                                <i class="fa-solid fa-play"></i> Lempar Dadu
+                            </button>
+                            <div id="dice-result-text" class="dice-result-text">
+                                Silakan lempar dadu untuk memulai!
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Legend Card -->
+                <div class="glass-card legend-card">
+                    <h2><i class="fa-solid fa-map section-icon"></i> Panduan Wilayah & Kuliner</h2>
+                    <div class="legend-list">
+                        <div class="legend-item"><span class="legend-dot sumatera"></span> Sumatera (Kotak 1-10)</div>
+                        <div class="legend-item"><span class="legend-dot jawa"></span> Jawa (Kotak 11-20)</div>
+                        <div class="legend-item"><span class="legend-dot kalimantan"></span> Kalimantan (Kotak 21-30)</div>
+                        <div class="legend-item"><span class="legend-dot sulawesi"></span> Sulawesi (Kotak 31-40)</div>
+                        <div class="legend-item"><span class="legend-dot papua"></span> Papua (Kotak 41-50)</div>
+                    </div>
+                    <div class="legend-help">
+                        <small><i class="fa-solid fa-circle-question"></i> Klik kotak manapun pada papan untuk melihat info kuliner khas daerah tersebut.</small>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- MODAL 1: Culinary Information Modal -->
+    <div id="food-modal" class="modal">
+        <div class="modal-content glass-card animate-zoom">
+            <div class="modal-header">
+                <span class="modal-badge" id="modal-food-region">Sumatera</span>
+                <span class="close-btn" id="close-food-modal">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="modal-food-header">
+                    <span class="modal-box-number" id="modal-box-number">#1</span>
+                    <h2 id="modal-food-name">Rendang</h2>
+                </div>
+                <div class="modal-divider"></div>
+                <p id="modal-food-desc" class="modal-food-desc">
+                    Masakan khas Sumatera Barat yang dimasak menggunakan santan dan rempah-rempah.
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="close-food-btn">Tutup</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 2: Snakes & Ladders Event Modal -->
+    <div id="event-modal" class="modal">
+        <div class="modal-content glass-card event-card animate-bounce-in">
+            <div class="modal-body text-center">
+                <div class="event-icon-container" id="event-icon-container">
+                    <i class="fa-solid fa-arrow-trend-up event-icon" id="event-icon"></i>
+                </div>
+                <h2 id="event-title">Selamat!</h2>
+                <p id="event-message" class="event-message">
+                    Kamu menemukan jalur kuliner baru.<br>Naik ke kotak X
+                </p>
+                <button class="btn btn-primary" id="close-event-btn">Lanjutkan Petualangan</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 3: Victory Modal -->
+    <div id="win-modal" class="modal">
+        <div class="modal-content glass-card victory-card animate-confetti">
+            <div class="modal-body text-center">
+                <div class="victory-crown">
+                    <i class="fa-solid fa-crown"></i>
+                </div>
+                <h2>🎉 Selamat! 🎉</h2>
+                <p class="victory-message" id="victory-message">
+                    Pemain X berhasil menjelajahi seluruh<br><strong>Kuliner Nusantara</strong>!
+                </p>
+                <div class="victory-divider"></div>
+                <p class="victory-sub">
+                    Semoga perjalanan rasa ini menginspirasimu untuk terus mencintai kekayaan kuliner Indonesia.
+                </p>
+                <button class="btn btn-success btn-lg" id="restart-btn">
+                    <i class="fa-solid fa-rotate-left"></i> Main Lagi
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 4: Trivia Question Modal -->
+    <div id="question-modal" class="modal">
+        <div class="modal-content glass-card animate-zoom">
+            <div class="modal-header">
+                <span class="modal-badge" id="question-food-region">Sumatera</span>
+                <span class="modal-box-number" id="question-box-number">#1</span>
+            </div>
+            <div class="modal-body">
+                <div class="question-header">
+                    <span id="question-player-badge" class="badge p1-bg">Pemain 1</span>
+                    <small class="food-label" id="question-food-title">Pertanyaan tentang: Rendang</small>
+                </div>
+                <h2 id="question-text" class="question-text">Rendang berasal dari daerah mana?</h2>
+                <div class="question-options" id="question-options">
+                    <!-- Dynamic option buttons populated in game.js -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 5: Trivia Answer Result Modal -->
+    <div id="answer-result-modal" class="modal">
+        <div class="modal-content glass-card event-card animate-bounce-in" id="answer-result-card">
+            <div class="modal-body text-center">
+                <div class="event-icon-container" id="result-icon-container">
+                    <i class="fa-solid fa-check event-icon" id="result-icon"></i>
+                </div>
+                <h2 id="result-title">Jawaban Benar!</h2>
+                <p id="result-message" class="event-message">
+                    Hebat! Kamu dipersilakan melanjutkan perjalanan.
+                </p>
+                <button class="btn btn-primary" id="close-result-btn">Lanjutkan</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="game.js"></script>
+</body>
+</html>
